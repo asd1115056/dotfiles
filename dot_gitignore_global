@@ -1,0 +1,75 @@
+########################################
+# IDE / Editor settings                #
+########################################
+# VSCode
+.vscode/
+.history/
+*.history
+
+# Sublime Text
+*.sublime-* 
+
+# Vim
+*.swp
+*.swo
+
+########################################
+# Compiled source / binary files       #
+########################################
+*.o
+*.so
+*.a
+*.out
+*.class
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.dll
+*.exe
+
+########################################
+# System files (macOS / Windows / Linux)#
+########################################
+.DS_Store
+.DS_Store?
+._*
+.Trashes
+.Spotlight-V100
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+########################################
+# Log / database files                 #
+########################################
+*.log
+*.sqlite*
+*.db*
+*.sql*
+
+########################################
+# Dotenv                               #
+########################################
+.env
+
+########################################
+# Git conflict / backup files          #
+########################################
+*.orig
+*.merge_file*
+
+
+########################################
+# Packages                             #
+########################################
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip

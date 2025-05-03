@@ -1,0 +1,73 @@
+
+#!/usr/bin/env bash
+# Git global configuration setup script
+
+git config --global user.name {{ .git.username }}
+git config --global user.email {{ .git.email }}
+
+### Init settings ###
+git config --global init.defaultBranch main
+
+### Core settings ###
+# Maybe should use git default path: ~/.config/git/ignore ?
+git config --global core.excludesfile ~/.gitignore_global
+
+### Commit settings ###
+git config --global commit.verbose true
+
+### Branch settings ###
+git config --global branch.sort -committerdate
+
+### Fetch settings ###
+git config --global fetch.prune true
+git config --global fetch.pruneTags true
+git config --global fetch.all true
+
+### Pull settings ###
+git config --global pull.rebase true
+
+### Push settings ###
+git config --global push.default simple # (default since 2.0)
+git config --global push.autoSetupRemote true
+git config --global push.followTags true
+
+### Status settings ###
+git config --global status.submoduleSummary true
+
+### Apply settings ###
+git config --global apply.whitespace nowarn
+
+### Tag settings ###
+git config --global tag.sort version:refname
+
+### Diff settings ###
+git config --global diff.algorithm histogram
+git config --global diff.colorMoved plain
+git config --global diff.mnemonicPrefix true
+git config --global diff.renames true
+
+### Help settings ###
+git config --global help.autocorrect prompt
+
+### Rebase settings ###
+git config --global rebase.autoStash true
+
+### Color settings ###
+git config --global color.ui auto
+
+# Branch color settings
+git config --global color.branch.current "yellow bold"
+git config --global color.branch.local "green bold"
+git config --global color.branch.remote "cyan bold"
+
+# Diff color settings
+git config --global color.diff.meta "yellow bold"
+git config --global color.diff.frag "magenta bold"
+git config --global color.diff.old "red bold"
+git config --global color.diff.new "green bold"
+git config --global color.diff.whitespace "red reverse"
+
+# Status color settings
+git config --global color.status.added "green bold"
+git config --global color.status.changed "yellow bold"
+git config --global color.status.untracked "red bold"
