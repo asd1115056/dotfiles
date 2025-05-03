@@ -1,0 +1,17 @@
+{{- $gitUsername := promptStringOnce . "git.username" "Git Username" -}}
+{{- $gitEmail := promptStringOnce . "git.email" "Git Email address" -}}
+
+
+{{/* Detect OS Type */}}
+{{- $osid := .chezmoi.os -}}
+{{- if hasKey .chezmoi.osRelease "id" -}}
+{{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+{{- if hasKey .chezmoi.osRelease "idLike" -}}
+{{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.idLike -}}
+{{- end -}}
+
+[data]
+    git.username = {{ $gitUsername | quote }}
+    git.email = {{ $gitEmail | quote }}
+    osid = {{ $osid | quote }}
