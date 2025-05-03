@@ -1,58 +1,86 @@
-
 #!/usr/bin/env bash
 # Git global configuration setup script
 
-git config --global user.name {{ .git.username }}
-git config --global user.email {{ .git.email }}
+set -euo pipefail
+
+# Colorized output functions
+info()    { echo -e "\033[0;36m[i]\033[0m $*"; }
+warn()    { echo -e "\033[1;33m[!]\033[0m $*"; }
+success() { echo -e "\033[0;32m[✔]\033[0m $*"; }
+error()   { echo -e "\033[0;31m[✘]\033[0m $*" >&2; }
+
+# Check if Git is installed
+if ! command -v git &>/dev/null; then
+  error "Git is not installed. Please install Git first."
+  exit 1
+fi
+
+info "Setting user name and email..."
+git config --global user.name "{{ .git.username }}"
+git config --global user.email "{{ .git.email }}"
 
 ### Init settings ###
+info "Configuring init.defaultBranch..."
 git config --global init.defaultBranch main
 
 ### Core settings ###
+info "Setting core.excludesfile..."
 # Maybe should use git default path: ~/.config/git/ignore ?
 git config --global core.excludesfile ~/.gitignore_global
 
 ### Commit settings ###
+info "Enabling verbose commit messages..."
 git config --global commit.verbose true
 
 ### Branch settings ###
+info "Sorting branches by latest committer date..."
 git config --global branch.sort -committerdate
 
 ### Fetch settings ###
+info "Enabling fetch prune..."
 git config --global fetch.prune true
 git config --global fetch.pruneTags true
 git config --global fetch.all true
 
 ### Pull settings ###
+info "Using rebase by default for pulls..."
 git config --global pull.rebase true
 
 ### Push settings ###
+info "Setting push behavior..."
 git config --global push.default simple # (default since 2.0)
 git config --global push.autoSetupRemote true
 git config --global push.followTags true
 
 ### Status settings ###
+info "Showing submodule summary in status..."
 git config --global status.submoduleSummary true
 
 ### Apply settings ###
+info "Disabling whitespace warning during apply..."
 git config --global apply.whitespace nowarn
 
 ### Tag settings ###
+info "Sorting tags by version..."
 git config --global tag.sort version:refname
 
 ### Diff settings ###
+info "Setting diff options..."
 git config --global diff.algorithm histogram
 git config --global diff.colorMoved plain
 git config --global diff.mnemonicPrefix true
 git config --global diff.renames true
 
 ### Help settings ###
+info "Enabling autocorrect with prompt..."
 git config --global help.autocorrect prompt
 
 ### Rebase settings ###
+info "Enabling autoStash during rebase..."
 git config --global rebase.autoStash true
 
 ### Color settings ###
+info "Setting color options..."
 git config --global color.ui auto
 
 # Branch color settings
@@ -71,3 +99,5 @@ git config --global color.diff.whitespace "red reverse"
 git config --global color.status.added "green bold"
 git config --global color.status.changed "yellow bold"
 git config --global color.status.untracked "red bold"
+
+success "Git global configuration completed!"
