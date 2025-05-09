@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Color prompt function
+info() { echo -e "\033[0;36m[i]\033[0m $*"; }
+warn() { echo -e "\033[1;33m[!]\033[0m $*"; }
+success() { echo -e "\033[0;32m[✔]\033[0m $*"; }
+error() { echo -e "\033[0;31m[✘]\033[0m $*" >&2; }
+
+FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Meslo.zip"
+FONT_DEST="$HOME/.local/share/fonts/Meslo"
+
+# Check if Zip is installed
+if ! command -v zip &>/dev/null; then
+  error "Zip is not installed. Please install Zip first."
+  exit 1
+fi
+
+info "Create font destination directory: $FONT_DEST"
+mkdir -p "$FONT_DEST"
+
+TMP_ZIP="$(mktemp --suffix=.zip)"
+
+info "Download font files..."
+curl -L -o "$TMP_ZIP" "$FONT_URL"
+
+info "Unzip to font folder..."
+unzip -o "$TMP_ZIP" -d "$FONT_DEST"
+
+info "Refresh font cache..."
+fc-cache -fv "$FONT_DEST"
+
+# Verify that the installation was successful
+if fc-list | grep -i "Meslo" >/dev/null; then
+    success "Meslo Nerd Font has been installed successfully!"
+else
+    error "The installation does not appear to have been successful, please manually check that the fonts appear correctly in $FONT_DEST"
+fi
