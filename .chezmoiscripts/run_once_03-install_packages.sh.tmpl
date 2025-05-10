@@ -10,9 +10,9 @@ error() { echo -e "\033[0;31m[✘]\033[0m $*" >&2; }
 
 info "Current OS: {{ .osid }}"
 
-{{- $os := .osid | lower }}
-
-{{- if or (contains $os "ubuntu") (contains $os "debian") }}
+{{- $osid := .osid | lower -}}
+{{- if or (contains "ubuntu" $osid) (contains "debian" $osid) }}
+info "This is a Debian-based system."
 warn "Installing required packages (requires sudo)..."
 
 if ! sudo apt update; then
@@ -26,9 +26,11 @@ if ! sudo apt install -y zsh; then
 fi
 
 success "zsh installed successfully."
+{{- else }}
+warn "Not a Debian-based system. Skipping apt installation."
 {{- end }}
 
-{{- if contains $os "linux" }}
+{{- if contains "linux" $osid}}
 # Link tmux config
 TMUX_SRC="$HOME/.local/.tmux_runtime/.tmux.conf"
 TMUX_DEST="$HOME/.tmux.conf"
