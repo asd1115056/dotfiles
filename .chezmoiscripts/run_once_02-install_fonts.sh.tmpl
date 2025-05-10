@@ -22,7 +22,17 @@ mkdir -p "$FONT_DEST"
 TMP_ZIP="$(mktemp --suffix=.zip)"
 
 info "Download font files..."
-curl -L -o "$TMP_ZIP" "$FONT_URL"
+# Check if curl or wget is available for downloading
+if command -v curl &>/dev/null; then
+  info "Download font files using curl..."
+  curl -L -o "$TMP_ZIP" "$FONT_URL"
+elif command -v wget &>/dev/null; then
+  info "Download font files using wget..."
+  wget -O "$TMP_ZIP" "$FONT_URL"
+else
+  error "To download font files, you must have either curl or wget installed."
+  exit 1
+fi
 
 info "Unzip to font folder..."
 unzip -o "$TMP_ZIP" -d "$FONT_DEST"
