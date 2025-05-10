@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Color prompt function
+info() { echo -e "\033[0;36m[i]\033[0m $*"; }
+warn() { echo -e "\033[1;33m[!]\033[0m $*"; }
+success() { echo -e "\033[0;32m[✔]\033[0m $*"; }
+error() { echo -e "\033[0;31m[✘]\033[0m $*" >&2; }
+
+
+info "Current OS: {{ .osid }}"
+
+{{- $os := .osid | lower }}
+
+{{- if or (contains $os "ubuntu") (contains $os "debian") }}
+warn "Installing required packages (requires sudo)..."
+
+if ! sudo apt update; then
+  error "Failed to update package list."
+  exit 1
+fi
+
+if ! sudo apt install -y zsh; then
+  error "Failed to install zsh."
+  exit 1
+fi
+
+success "zsh installed successfully."
+{{- end }}
+
+{{- if contains $os "linux" }}
+# Link tmux config
+TMUX_SRC="$HOME/.local/.tmux_runtime/.tmux.conf"
+TMUX_DEST="$HOME/.tmux.conf"
+
+warn "Linking tmux runtime config..."
+ln -sf "$TMUX_SRC" "$TMUX_DEST"
+success "Linked tmux config to $TMUX_DEST"
+{{- end }}
