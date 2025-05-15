@@ -2,62 +2,71 @@
 set -euo pipefail
 
 # ---------- Colored logging functions ----------
-info() { echo -e "\033[0;36m[i]\033[0m $*"; }
-warn() { echo -e "\033[1;33m[!]\033[0m $*"; }
+info()    { echo -e "\033[0;36m[i]\033[0m $*"; }
+warn()    { echo -e "\033[1;33m[!]\033[0m $*"; }
 success() { echo -e "\033[0;32m[✔]\033[0m $*"; }
-error() { echo -e "\033[0;31m[✘]\033[0m $*" >&2; }
+error()   { echo -e "\033[0;31m[✘]\033[0m $*" >&2; }
 
-# ---------- Show current OS ----------
-info "Current OS: {{ .osid }}"
+# ---------- Variables ----------
+OS_ID="{{ .osid | lower }}"
+DEBIAN_PKGS="zsh tmux"
 
-# ---------- Handle Debian-based systems ----------
-{{- $osid := .osid | lower -}}
-{{- if or (contains "ubuntu" $osid) (contains "debian" $osid) }}
-
-info "Detected a Debian-based system."
-warn "Installing required packages (sudo required)..."
-
-if ! sudo apt update; then
-  error "Failed to update package list."
-  exit 1
-fi
-
-if ! sudo apt install -y zsh; then
-  error "Failed to install zsh."
-  exit 1
-fi
-
-success "zsh installed successfully."
-
-{{- else }}
-warn "Not a Debian-based system. Skipping apt installation."
-{{- end }}
-
-# ---------- Linux-specific behavior ----------
-{{- if contains "linux" $osid }}
-
-# Set tmux config source and destination
 TMUX_SRC="$HOME/.local/.tmux_runtime/.tmux.conf"
 TMUX_DEST="$HOME/.tmux.conf"
 
-warn "Linking tmux runtime config..."
-if [ -f "$TMUX_SRC" ]; then
-  ln -sf "$TMUX_SRC" "$TMUX_DEST"
-  success "Linked tmux config to $TMUX_DEST"
-else
-  warn "tmux config source not found: $TMUX_SRC"
-fi
+# ---------- Functions ----------
 
-# Attempt to change default shell to zsh
-if zsh_path="$(command -v zsh 2>/dev/null)"; then
-  info "Changing default shell to: $zsh_path"
-  if chsh -s "$zsh_path"; then
-    success "Shell changed to zsh."
-  else
-    warn "chsh failed. You may need to run it manually or with sudo."
+install_debian_packages() {
+  info "Detected a Debian-based system."
+  warn "Installing required packages: $DEBIAN_PKGS (sudo required)..."
+
+  if ! sudo apt update; then
+    error "Failed to update apt package list."
+    exit 1
   fi
+
+  if ! sudo apt install -y $DEBIAN_PKGS; then
+    error "Failed to install packages: $DEBIAN_PKGS"
+    exit 1
+  fi
+
+  success "Packages installed successfully: $DEBIAN_PKGS"
+}
+
+link_tmux_config() {
+  warn "Linking tmux runtime config..."
+  if [ -f "$TMUX_SRC" ]; then
+    ln -sf "$TMUX_SRC" "$TMUX_DEST"
+    success "Linked tmux config to $TMUX_DEST"
+  else
+    warn "tmux config source not found: $TMUX_SRC"
+  fi
+}
+
+change_shell_to_zsh() {
+  if zsh_path="$(command -v zsh 2>/dev/null)"; then
+    info "Changing default shell to: $zsh_path"
+    if chsh -s "$zsh_path"; then
+      success "Shell changed to zsh."
+    else
+      warn "Failed to change shell with chsh. You may need to run manually or with sudo."
+    fi
+  else
+    warn "zsh not found in PATH. Skipping shell change."
+  fi
+}
+
+# ---------- Main ----------
+
+info "Current OS: $OS_ID"
+
+if [[ "$OS_ID" == *"debian"* || "$OS_ID" == *"ubuntu"* ]]; then
+  install_debian_packages
 else
-  warn "zsh not found in PATH. Skipping chsh."
+  warn "Not a Debian-based system. Skipping apt package installation."
 fi
 
-{{- end }}
+if [[ "$OS_ID" == *"linux"* ]]; then
+  link_tmux_config
+  change_shell_to_zsh
+fi
