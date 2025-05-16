@@ -26,6 +26,7 @@ install_apt_packages() {
 }
 
 # ---------- User Prompt ----------
+info "Current OS: $OS_ID"
 read -p "Do you want to install packages? [Y/n] " answer
 case "$answer" in
 [Nn]*)
