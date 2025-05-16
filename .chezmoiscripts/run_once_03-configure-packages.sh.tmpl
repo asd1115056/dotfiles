@@ -9,29 +9,11 @@ error()   { echo -e "\033[0;31m[✘]\033[0m $*" >&2; }
 
 # ---------- Variables ----------
 OS_ID="{{ .osid | lower }}"
-DEBIAN_PKGS="zsh tmux"
 
 TMUX_SRC="$HOME/.local/.tmux_runtime/.tmux.conf"
 TMUX_DEST="$HOME/.tmux.conf"
 
 # ---------- Functions ----------
-
-install_debian_packages() {
-  info "Detected a Debian-based system."
-  warn "Installing required packages: $DEBIAN_PKGS (sudo required)..."
-
-  if ! sudo apt update; then
-    error "Failed to update apt package list."
-    exit 1
-  fi
-
-  if ! sudo apt install -y $DEBIAN_PKGS; then
-    error "Failed to install packages: $DEBIAN_PKGS"
-    exit 1
-  fi
-
-  success "Packages installed successfully: $DEBIAN_PKGS"
-}
 
 link_tmux_config() {
   warn "Linking tmux runtime config..."
@@ -57,14 +39,6 @@ change_shell_to_zsh() {
 }
 
 # ---------- Main ----------
-
-info "Current OS: $OS_ID"
-
-if [[ "$OS_ID" == *"debian"* || "$OS_ID" == *"ubuntu"* ]]; then
-  install_debian_packages
-else
-  warn "Not a Debian-based system. Skipping apt package installation."
-fi
 
 if [[ "$OS_ID" == *"linux"* ]]; then
   link_tmux_config
