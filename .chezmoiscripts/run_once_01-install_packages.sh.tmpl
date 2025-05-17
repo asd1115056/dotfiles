@@ -25,6 +25,30 @@ install_apt_packages() {
     success "All packages installed successfully via APT."
 }
 
+# ---------- BREW Install Function ----------
+install_brew_packages() {
+    info "Installing packages using Homebrew..."
+
+    # Check if brew is installed
+    if ! command -v brew &>/dev/null; then
+        warn "Homebrew is not installed. Installing Homebrew now..."
+        NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+        # After install, ensure brew is in the PATH
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" 2>/dev/null
+    fi
+
+    info "Updating Homebrew package list (brew update)..."
+    brew update
+
+    {{- range .packages.debian.brew }}
+    info "Installing: {{ . }}"
+    brew install {{ . | quote }}
+    {{- end }}
+
+    success "All packages installed successfully via Homebrew."
+}
+
 # ---------- User Prompt ----------
 info "Current OS: $OS_ID"
 read -p "Do you want to install packages? [Y/n] " answer
@@ -39,4 +63,5 @@ esac
 # ---------- Main Install Dispatcher ----------
 if [[ "$OS_ID" == *"debian"* || "$OS_ID" == *"ubuntu"* ]]; then
     install_apt_packages
+    install_brew_packages
 fi

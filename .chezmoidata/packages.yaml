@@ -4,3 +4,7 @@ packages:
       - zsh
       - tmux
       - git
+      - curl
+      - build-essential
+    brew:
+      - jesseduffield/lazygit/lazygit
