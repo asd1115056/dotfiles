@@ -8,3 +8,4 @@ packages:
       - build-essential
     brew:
       - jesseduffield/lazygit/lazygit
+      - brew install jesseduffield/lazydocker/lazydocke
