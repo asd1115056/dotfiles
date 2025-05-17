@@ -12,6 +12,7 @@ OS_ID="{{ .osid | lower }}"
 
 TMUX_SRC="$HOME/.local/.oh-my-tmux/.tmux.conf"
 TMUX_DEST="$HOME/.tmux.conf"
+FONT_DEST="$HOME/.local/share/fonts/Meslo"
 
 # ---------- Functions ----------
 
@@ -38,9 +39,21 @@ change_shell_to_zsh() {
   fi
 }
 
+refresh_and_verify_font() {
+  info "Refreshing font cache..."
+  fc-cache -fv "$FONT_DEST"
+
+  if fc-list | grep -i "Meslo" >/dev/null; then
+    success "Meslo Nerd Font was installed successfully!"
+  else
+    error "The installation seems to have failed. Please manually check if the fonts appear correctly in $FONT_DEST"
+  fi
+}
+
 # ---------- Main ----------
 
 if [[ "$OS_ID" == *"linux"* ]]; then
+  refresh_and_verify_font
   link_tmux_config
   change_shell_to_zsh
 fi
