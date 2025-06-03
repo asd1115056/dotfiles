@@ -5,6 +5,7 @@
 .vscode/
 .history/
 *.history
+*.vscode-ctags
 
 # Sublime Text
 *.sublime-* 
