@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -25,119 +18,14 @@ zinit light-mode for \
     zdharma-continuum/zinit-annex-bin-gem-node \
     zdharma-continuum/zinit-annex-patch-dl \
     zdharma-continuum/zinit-annex-rust
+
 ### End of Zinit's installer chunk
 
-# Load powerlevel10k theme
-zinit ice depth"1"; zinit light romkatv/powerlevel10k
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-#######################################################
-# ZSH Basic Options
-#######################################################
-
-setopt autocd              # change directory just by typing its name
-setopt correct             # auto correct mistakes
-setopt interactivecomments # allow comments in interactive mode
-setopt magicequalsubst     # enable filename expansion for arguments of the form ‘anything=expression’
-setopt nonomatch           # hide error message if there is no match for the pattern
-setopt notify              # report the status of background jobs immediately
-setopt numericglobsort     # sort filenames numerically when it makes sense
-setopt promptsubst         # enable command substitution in prompt
-
-#######################################################
-# Environment Variables
-#######################################################
-
-
-#######################################################
-# History Configuration
-#######################################################
-
-# HISTSIZE=2000
-# HISTFILE=~/.zsh_history
-# SAVEHIST=$HISTSIZE
-# HISTDUP=erase
-# setopt appendhistory
-# setopt sharehistory
-# setopt hist_ignore_space
-# setopt hist_ignore_all_dups
-# setopt hist_save_no_dups
-# setopt hist_ignore_dups
-# setopt hist_find_no_dups
-
-#######################################################
-# Plugin Configuration
-#######################################################
-
-#Plugin - zsh-autocomplete, fast-syntax-highlighting
-zinit lucid for \
- atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
-    zdharma-continuum/fast-syntax-highlighting \
- blockf \
-    marlonrichert/zsh-autocomplete \
- atload"!_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions
-
-#Plugin - MichaelAquilina/zsh-you-should-use
-zinit light MichaelAquilina/zsh-you-should-use
-
-#Plugin - zsh-z
-zinit load agkozak/zsh-z
-
-#Plugin - OMZ
-zinit snippet OMZ::plugins/sudo/sudo.plugin.zsh
-zinit snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
-zinit snippet OMZ::plugins/git/git.plugin.zsh
-
-#Plugin - replace GNU/ls with eza-community/eza
-zinit wait lucid for \
-  has'eza' atinit'AUTOCD=1' \
-    z-shell/zsh-eza
-
-#Plugin - enhances the terminal environment with 256 color
-zinit light chrissicool/zsh-256color
-
-#Plugin - enhances shell history with a SQLite database
-# line 1: `atuin` binary as command, from github release, only look at .tar.gz files, use the `atuin` file from the extracted archive
-# line 2: setup at clone(create init.zsh, completion)
+# Load starship theme
+# line 1: `starship` binary as command, from github release
+# line 2: starship setup at clone(create init.zsh, completion)
 # line 3: pull behavior same as clone, source init.zsh
-zinit ice as"command" from"gh-r" bpick"atuin-*.tar.gz" mv"atuin*/atuin -> atuin" \
-    atclone"./atuin init zsh > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
-    atpull"%atclone" src"init.zsh"
-zinit light atuinsh/atuin
-
-#######################################################
-# Aliases
-#######################################################
-
-alias .='source'
-alias c='clear'
-alias ..='cd ..'
-alias mkdir='mkdir -pv'
-alias cp='cp -iv'
-alias mv='mv -iv'
-alias rm='rm -iv'
-alias rmdir='rmdir -v'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-
-# Alias for neovim
-if [[ -x "$(command -v nvim)" ]]; then
-	alias vi='nvim'
-	alias vim='nvim'
-	alias svi='sudo nvim'
-	alias vis='nvim "+set si"'
-elif [[ -x "$(command -v vim)" ]]; then
-	alias vi='vim'
-	alias svi='sudo vim'
-	alias vis='vim "+set si"'
-fi
-
-# Alias for lazygit
-# Link: https://github.com/jesseduffield/lazygit
-if [[ -x "$(command -v lazygit)" ]]; then
-    alias lg='lazygit'
-fi
+zinit ice as"command" from"gh-r" \
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+          atpull"%atclone" src"init.zsh"
+zinit light starship/starship
