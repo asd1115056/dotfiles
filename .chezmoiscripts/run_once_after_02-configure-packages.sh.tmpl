@@ -12,7 +12,7 @@ OS_ID="{{ .osid | lower }}"
 
 TMUX_SRC="$HOME/.local/.oh-my-tmux/.tmux.conf"
 TMUX_DEST="$HOME/.tmux.conf"
-FONT_DEST="$HOME/.local/share/fonts/Meslo"
+FONT_DEST="$HOME/.local/share/fonts/JetBrainsMono"
 
 # ---------- Functions ----------
 
@@ -43,8 +43,8 @@ refresh_and_verify_font() {
   info "Refreshing font cache..."
   fc-cache -fv "$FONT_DEST"
 
-  if fc-list | grep -i "Meslo" >/dev/null; then
-    success "Meslo Nerd Font was installed successfully!"
+  if fc-list | grep -i "JetBrains" >/dev/null; then
+    success "JetBrains Mono Nerd Font was installed successfully!"
   else
     error "The installation seems to have failed. Please manually check if the fonts appear correctly in $FONT_DEST"
   fi
