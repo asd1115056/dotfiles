@@ -5,7 +5,9 @@ exact = true
 stripComponents = 1
 refreshPeriod = "168h"
 
-[".local/share/fonts/Meslo"]
+# JetBrains Mono Nerd Font - download archive but only extract Mono variants
+[".local/share/fonts"]
 type = "archive"
-url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Meslo.zip"
-exact = true
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip"
+include = ["**/JetBrainsMonoNerdFontMono-*.ttf"]
+refreshPeriod = "720h"
