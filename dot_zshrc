@@ -54,11 +54,58 @@ zinit light marlonrichert/zsh-autocomplete
 zinit lucid for \
   zsh-users/zsh-autosuggestions
 
+#Plugin - reminds you to use existing aliases
+zinit light MichaelAquilina/zsh-you-should-use
+
 #Plugin - enhances shell history with a SQLite database
 zinit ice as"command" from"gh-r" bpick"atuin-*.tar.gz" mv"atuin*/atuin -> atuin" \
     atclone"./atuin init zsh > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
     atpull"%atclone" src"init.zsh"
 zinit light atuinsh/atuin
 
+#Plugin - command-line fuzzy finder
+zinit ice as"command" from"gh-r" \
+    mv"fzf*/fzf -> fzf" \
+    atclone"./fzf --zsh > init.zsh" \
+    atpull"%atclone" src"init.zsh"
+zinit light junegunn/fzf
+
+#Plugin - modern replacement for ls with better colors and features
+zinit ice as"command" from"gh-r" \
+    mv"eza*/eza -> eza" \
+    atload"alias ls='eza --icons=auto --group-directories-first'; \
+           alias ll='eza -lh --icons=auto --group-directories-first'; \
+           alias la='eza -lha --icons=auto --group-directories-first'; \
+           alias lt='eza --tree --level=2 --icons=auto'; \
+           alias lg='eza -lh --icons=auto --group-directories-first --git'"
+zinit light eza-community/eza
+
+#Plugin - cat clone with syntax highlighting and git integration
+zinit ice as"command" from"gh-r" \
+    mv"bat*/bat -> bat" \
+    atload"alias cat='bat --paging=never --style=plain'; \
+           alias batman='bat --paging=always --style=full'; \
+           export MANPAGER='sh -c \"col -bx | bat -l man -p\"'"
+zinit light sharkdp/bat
+
+#Plugin - simplified and community-driven man pages
+zinit ice as"command" from"gh-r" bpick"*linux*.tar.gz" \
+    mv"tlrc*/tlrc -> tldr" \
+    atload"alias help='tldr'"
+zinit light tldr-pages/tlrc
+
+#Plugin - smarter cd command (intelligent directory navigation)
+# Note: using 'zz' for interactive mode to avoid conflict with zinit's 'zi' alias
+zinit ice as"command" from"gh-r" \
+    mv"zoxide*/zoxide -> zoxide" \
+    atclone"./zoxide init zsh --cmd z > init.zsh" \
+    atpull"%atclone" src"init.zsh" \
+    atload"alias zz='__zoxide_zi'"
+zinit light ajeetdsouza/zoxide
+
+#Plugin - press ESC twice to add sudo to current command
+zinit snippet OMZ::plugins/sudo/sudo.plugin.zsh
+
+# Syntax highlighting must be loaded last
 zinit ice lucid wait'0'
 zinit light zdharma-continuum/fast-syntax-highlighting
