@@ -58,8 +58,9 @@ zinit lucid for \
 zinit light MichaelAquilina/zsh-you-should-use
 
 #Plugin - enhances shell history with a SQLite database
+# Note: using --disable-up-arrow to keep native up/down arrow history search
 zinit ice as"command" from"gh-r" bpick"atuin-*.tar.gz" mv"atuin*/atuin -> atuin" \
-    atclone"./atuin init zsh > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
+    atclone"./atuin init zsh --disable-up-arrow > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
     atpull"%atclone" src"init.zsh"
 zinit light atuinsh/atuin
 
