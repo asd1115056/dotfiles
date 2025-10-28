@@ -6,3 +6,8 @@
 if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
+
+# Homebrew completions (add to fpath before compinit)
+if [[ -d "/home/linuxbrew/.linuxbrew/share/zsh/site-functions" ]]; then
+    fpath=(/home/linuxbrew/.linuxbrew/share/zsh/site-functions $fpath)
+fi

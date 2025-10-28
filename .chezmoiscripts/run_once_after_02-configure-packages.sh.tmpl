@@ -61,7 +61,17 @@ generate_completions() {
     success "Generated chezmoi completion"
   fi
 
-  # Add other completions here as needed
+  # Generate ripgrep completion
+  if command -v rg &>/dev/null; then
+    rg --generate complete-zsh > "$comp_dir/_rg"
+    success "Generated ripgrep completion"
+  fi
+
+  # Generate fd completion
+  if command -v fd &>/dev/null; then
+    fd --gen-completions=zsh > "$comp_dir/_fd"
+    success "Generated fd completion"
+  fi
 }
 
 # ---------- Main ----------
