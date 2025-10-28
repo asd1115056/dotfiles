@@ -50,10 +50,25 @@ refresh_and_verify_font() {
   fi
 }
 
+generate_completions() {
+  info "Generating shell completions..."
+  local comp_dir="$HOME/.local/share/zinit/completions"
+  mkdir -p "$comp_dir"
+
+  # Generate chezmoi completion
+  if command -v chezmoi &>/dev/null; then
+    chezmoi completion zsh > "$comp_dir/_chezmoi"
+    success "Generated chezmoi completion"
+  fi
+
+  # Add other completions here as needed
+}
+
 # ---------- Main ----------
 
 if [[ "$OS_ID" == *"linux"* ]]; then
   refresh_and_verify_font
   link_tmux_config
+  generate_completions
   change_shell_to_zsh
 fi
