@@ -96,6 +96,9 @@ zinit ice as"command" from"gh-r" \
            alias lg='eza -lh --icons=auto --group-directories-first --git'"
 zinit light eza-community/eza
 
+#Plugin - automatically ls after cd
+zinit light zshzoo/cd-ls
+
 #Plugin - cat clone with syntax highlighting and git integration
 zinit ice as"command" from"gh-r" \
     mv"bat*/bat -> bat" \
@@ -121,6 +124,10 @@ zinit light ajeetdsouza/zoxide
 
 #Plugin - press ESC twice to add sudo to current command
 zinit snippet OMZ::plugins/sudo/sudo.plugin.zsh
+
+#Plugin - copy utilities (file contents and paths to clipboard)
+zinit snippet OMZ::plugins/copyfile/copyfile.plugin.zsh
+zinit snippet OMZ::plugins/copypath/copypath.plugin.zsh
 
 # Syntax highlighting must be loaded last
 zinit ice lucid wait'0'

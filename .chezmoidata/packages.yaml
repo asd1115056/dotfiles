@@ -6,6 +6,8 @@ packages:
       - git
       - curl
       - build-essential
+      - xclip
+      - xsel
     brew:
       - jesseduffield/lazygit/lazygit
       - jesseduffield/lazydocker/lazydocker
