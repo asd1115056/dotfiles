@@ -11,3 +11,5 @@ packages:
     brew:
       - jesseduffield/lazygit/lazygit
       - jesseduffield/lazydocker/lazydocker
+      - ripgrep
+      - fd
