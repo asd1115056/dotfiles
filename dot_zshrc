@@ -66,6 +66,20 @@ setopt hist_no_store         # do not store history and fc commands
 setopt hist_save_by_copy     # save history file by copy then rename for safety
 
 #######################################################
+# Environment Variables
+#######################################################
+
+# FZF - Ctrl+R history search optimization
+export FZF_CTRL_R_OPTS="
+  --height 80%
+  --border rounded
+  --layout reverse
+  --exact
+  --preview 'echo {}'
+  --preview-window down:3:hidden
+  --bind 'ctrl-/:toggle-preview'"
+
+#######################################################
 # Plugin Configuration
 #######################################################
 
