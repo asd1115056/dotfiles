@@ -86,6 +86,10 @@ zinit ice as"command" from"gh-r" \
     atpull"%atclone" src"init.zsh"
 zinit light junegunn/fzf
 
+#Plugin - interactive git commands with fzf
+zinit ice lucid wait'1'
+zinit light wfxr/forgit
+
 #Plugin - modern replacement for ls with better colors and features
 zinit ice as"command" from"gh-r" \
     mv"eza*/eza -> eza" \
