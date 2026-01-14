@@ -43,27 +43,11 @@ setopt notify              # report the status of background jobs immediately
 setopt numericglobsort     # sort filenames numerically when it makes sense
 setopt promptsubst         # enable command substitution in prompt
 
-#######################################################
-# History Configuration
-#######################################################
-
-HISTFILE=~/.zsh_history
-HISTSIZE=50000
-SAVEHIST=50000
-
-setopt appendhistory         # append to history file
-setopt sharehistory          # share history across terminals
-setopt incappendhistory      # add commands immediately
-setopt extended_history      # record timestamp and execution time
-setopt hist_ignore_dups      # ignore duplicate commands
-setopt hist_ignore_all_dups  # remove all duplicates from history
-setopt hist_find_no_dups     # do not show duplicates when searching
-setopt hist_ignore_space     # ignore commands starting with space
-setopt hist_reduce_blanks    # remove unnecessary blanks
-setopt hist_verify           # verify history expansion before running
-setopt hist_expire_dups_first # expire duplicates first when max size is reached
-setopt hist_no_store         # do not store history and fc commands
-setopt hist_save_by_copy     # save history file by copy then rename for safety
+# History options
+setopt hist_ignore_space   # ignore commands starting with space (for Atuin dedup)
+setopt hist_reduce_blanks  # remove superfluous blanks from history items
+setopt hist_ignore_all_dups # remove older duplicate entries from history
+setopt hist_save_no_dups   # don't save duplicate entries
 
 #######################################################
 # Environment Variables
@@ -84,13 +68,6 @@ export FZF_DEFAULT_OPTS="
   --info inline
   --preview-window=right:60%:wrap
   --bind 'ctrl-/:toggle-preview'"
-
-# FZF - Ctrl+R history search optimization
-export FZF_CTRL_R_OPTS="
-  --height 80%
-  --exact
-  --preview 'echo {}'
-  --preview-window down:3:hidden"
 
 # FZF - Ctrl+T file search with preview
 export FZF_CTRL_T_OPTS="
@@ -171,3 +148,9 @@ zinit snippet OMZ::plugins/copypath/copypath.plugin.zsh
 # Syntax highlighting must be loaded last
 zinit ice lucid wait'0'
 zinit light zdharma-continuum/fast-syntax-highlighting
+
+#Plugin - magical shell history with search and sync
+zinit ice as"command" from"gh-r" bpick"atuin-*.tar.gz" mv"atuin*/atuin -> atuin" \
+    atclone"./atuin init zsh > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
+    atpull"%atclone" src"init.zsh"
+zinit light atuinsh/atuin
