@@ -176,3 +176,6 @@ zinit light atuinsh/atuin
 # Syntax highlighting MUST be loaded last (with delay)
 zinit ice lucid wait'0z'
 zinit light zdharma-continuum/fast-syntax-highlighting
+
+# Make . search current directory (like source does, unlike POSIX dot builtin)
+alias .='source'
